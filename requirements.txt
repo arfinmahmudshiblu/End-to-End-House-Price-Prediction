@@ -1,0 +1,17 @@
+Flask
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+joblib
+flask-cors
+gunicorn
+pickle
+from-root
+plotly
+scipy
+xgboost
+catboost
+
+
