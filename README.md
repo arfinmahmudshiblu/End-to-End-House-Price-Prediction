@@ -21,5 +21,6 @@ conda activate webapp
 pip install -r requirements.txt
 ```
 
-
+```bash
 python -m src.components.data_ingestion
+```
