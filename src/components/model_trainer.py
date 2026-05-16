@@ -1,340 +1,281 @@
-# import os
-# import sys
-# from dataclasses import dataclass
+import os
+import sys
 
-# import shap
-# import numpy as np
-# import pandas as pd
+import shap
+import numpy as np
+import pandas as pd
 
-# from sklearn.metrics import r2_score
-# from sklearn.model_selection import GridSearchCV
+from dataclasses import dataclass
 
-# from sklearn.linear_model import (
-#     LinearRegression,
-#     Ridge,
-#     Lasso
-# )
+from sklearn.metrics import r2_score
+from sklearn.model_selection import GridSearchCV
 
-# from sklearn.ensemble import (
-#     RandomForestRegressor,
-#     GradientBoostingRegressor,
-#     VotingRegressor,
-#     StackingRegressor
-# )
+from sklearn.linear_model import (
+    LinearRegression,
+    Ridge,
+    Lasso
+)
 
-# from sklearn.tree import DecisionTreeRegressor
-# from sklearn.svm import SVR
-# from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import DecisionTreeRegressor
 
-# from xgboost import XGBRegressor
+from sklearn.ensemble import (
+    RandomForestRegressor,
+    VotingRegressor,
+    StackingRegressor
+)
 
-# from src.exception import CustomException
-# from src.logger import logging
-# from src.utils import save_object
+from sklearn.svm import SVR
 
+from sklearn.neighbors import KNeighborsRegressor
 
-# @dataclass
-# class ModelTrainerConfig:
-#     trained_model_file_path = os.path.join(
-#         "artifacts",
-#         "best_model.pkl"
-#     )
+from xgboost import XGBRegressor
+from lightgbm import LGBMRegressor
 
+from src.exception import CustomException
+from src.logger import logging
+from src.utils import save_object, evaluate_models
 
-# class ModelTrainer:
 
-#     def __init__(self):
-#         self.model_trainer_config = ModelTrainerConfig()
+@dataclass
+class ModelTrainerConfig:
+    trained_model_file_path = os.path.join(
+        "artifacts",
+        "model.pkl"
+    )
 
-#     def evaluate_models(
-#         self,
-#         X_train,
-#         y_train,
-#         X_test,
-#         y_test,
-#         models,
-#         params
-#     ):
+    shap_explainer_path = os.path.join(
+        "artifacts",
+        "shap_explainer.pkl"
+    )
 
-#         try:
 
-#             report = {}
+class ModelTrainer:
 
-#             for model_name, model in models.items():
+    def __init__(self):
 
-#                 logging.info(f"Training {model_name}")
+        self.model_trainer_config = ModelTrainerConfig()
 
-#                 param_grid = params[model_name]
+    def initiate_model_trainer(
+        self,
+        train_array,
+        test_array
+    ):
 
-#                 gs = GridSearchCV(
-#                     model,
-#                     param_grid,
-#                     cv=3,
-#                     scoring="r2",
-#                     n_jobs=-1
-#                 )
+        try:
 
-#                 gs.fit(X_train, y_train)
+            logging.info(
+                "Splitting training and testing input data"
+            )
 
-#                 best_model = gs.best_estimator_
+            X_train, y_train, X_test, y_test = (
+                train_array[:, :-1],
+                train_array[:, -1],
+                test_array[:, :-1],
+                test_array[:, -1]
+            )
 
-#                 best_model.fit(X_train, y_train)
+            # =========================
+            # Base Models
+            # =========================
 
-#                 y_pred = best_model.predict(X_test)
+            models = {
 
-#                 score = r2_score(y_test, y_pred)
+                "Linear Regression": LinearRegression(),
 
-#                 report[model_name] = score
+                "Ridge Regression": Ridge(),
 
-#                 models[model_name] = best_model
+                "Lasso Regression": Lasso(),
 
-#                 logging.info(
-#                     f"{model_name} R2 Score: {score}"
-#                 )
+                "Decision Tree": DecisionTreeRegressor(),
 
-#             return report, models
+                "Random Forest": RandomForestRegressor(),
 
-#         except Exception as e:
-#             raise CustomException(e, sys)
+                "Support Vector Machine": SVR(),
 
-#     def shap_explainability(
-#         self,
-#         model,
-#         X_train,
-#         X_test
-#     ):
-
-#         try:
-
-#             logging.info("Generating SHAP values")
-
-#             explainer = shap.Explainer(model, X_train)
-
-#             shap_values = explainer(X_test)
-
-#             shap.summary_plot(
-#                 shap_values,
-#                 X_test,
-#                 show=True
-#             )
+                "XGBoost": XGBRegressor(
+                    objective="reg:squarederror",
+                    verbosity=0
+                ),
 
-#         except Exception as e:
-#             raise CustomException(e, sys)
-
-#     def initiate_model_trainer(
-#         self,
-#         train_array,
-#         test_array
-#     ):
-
-#         try:
-
-#             logging.info(
-#                 "Splitting train and test arrays"
-#             )
-
-#             X_train, y_train, X_test, y_test = (
-#                 train_array[:, :-1],
-#                 train_array[:, -1],
-#                 test_array[:, :-1],
-#                 test_array[:, -1]
-#             )
-
-#             models = {
-
-#                 "Linear Regression":
-#                     LinearRegression(),
-
-#                 "Ridge Regression":
-#                     Ridge(),
-
-#                 "Lasso Regression":
-#                     Lasso(),
-
-#                 "Decision Tree":
-#                     DecisionTreeRegressor(),
-
-#                 "Random Forest":
-#                     RandomForestRegressor(),
-
-#                 "XGBoost":
-#                     XGBRegressor(),
-
-                
-#                 "Support Vector Regressor":
-#                     SVR()
-#             }
-
-#             params = {
-
-#                 "Linear Regression": {},
-
-#                 "Ridge Regression": {
-#                     "alpha": [0.01, 0.1, 1.0, 10]
-#                 },
-
-#                 "Lasso Regression": {
-#                     "alpha": [0.001, 0.01, 0.1, 1]
-#                 },
-
-#                 "Decision Tree": {
-#                     "max_depth": [3, 5, 10, None],
-#                     "min_samples_split": [2, 5, 10]
-#                 },
-
-#                 "Random Forest": {
-#                     "n_estimators": [50, 100, 200],
-#                     "max_depth": [5, 10, None]
-#                 },
-
-#                 "XGBoost": {
-#                     "learning_rate": [0.01, 0.05, 0.1],
-#                     "n_estimators": [100, 200],
-#                     "max_depth": [3, 5, 7]
-#                 },
-                
-#                 "Support Vector Regressor": {
-#                     "C": [0.1, 1, 10],
-#                     "kernel": ["linear", "rbf"]
-#                 }
-#             }
-
-#             model_report, trained_models = self.evaluate_models(
-#                 X_train=X_train,
-#                 y_train=y_train,
-#                 X_test=X_test,
-#                 y_test=y_test,
-#                 models=models,
-#                 params=params
-#             )
-
-#             logging.info(model_report)
-
-#             # ---------------------------------------------------
-#             # Best Base Model
-#             # ---------------------------------------------------
-
-#             best_model_score = max(model_report.values())
-
-#             best_model_name = list(model_report.keys())[
-#                 list(model_report.values()).index(
-#                     best_model_score
-#                 )
-#             ]
-
-#             best_model = trained_models[best_model_name]
-
-#             logging.info(
-#                 f"Best Model: {best_model_name}"
-#             )
-
-#             # ---------------------------------------------------
-#             # Voting Regressor
-#             # ---------------------------------------------------
-
-#             voting_regressor = VotingRegressor(
-#                 estimators=[
-#                     (
-#                         "rf",
-#                         trained_models["Random Forest"]
-#                     ),
-#                     (
-#                         "xgb",
-#                         trained_models["XGBoost"]
-#                     )
-#                 ]
-#             )
-
-#             voting_regressor.fit(X_train, y_train)
-
-#             voting_pred = voting_regressor.predict(X_test)
-
-#             voting_score = r2_score(
-#                 y_test,
-#                 voting_pred
-#             )
-
-#             logging.info(
-#                 f"Voting Regressor R2 Score: {voting_score}"
-#             )
-
-#             # ---------------------------------------------------
-#             # Stacking Regressor
-#             # ---------------------------------------------------
-
-#             stacking_regressor = StackingRegressor(
-#                 estimators=[
-#                     (
-#                         "rf",
-#                         trained_models["Random Forest"]
-#                     ),
-#                     (
-#                         "xgb",
-#                         trained_models["XGBoost"]
-#                     )
-                    
-#                 ],
-#                 final_estimator=LinearRegression()
-#             )
-
-#             stacking_regressor.fit(X_train, y_train)
-
-#             stacking_pred = stacking_regressor.predict(
-#                 X_test
-#             )
-
-#             stacking_score = r2_score(
-#                 y_test,
-#                 stacking_pred
-#             )
-
-#             logging.info(
-#                 f"Stacking Regressor R2 Score: {stacking_score}"
-#             )
-
-#             # ---------------------------------------------------
-#             # Save Best Model
-#             # ---------------------------------------------------
-
-#             final_model = stacking_regressor
-
-#             save_object(
-#                 file_path=self.model_trainer_config.trained_model_file_path,
-#                 obj=final_model
-#             )
-
-#             logging.info(
-#                 "Best model saved successfully"
-#             )
-
-#             # ---------------------------------------------------
-#             # SHAP Explainability
-#             # ---------------------------------------------------
-
-#             self.shap_explainability(
-#                 model=trained_models["XGBoost"],
-#                 X_train=X_train,
-#                 X_test=X_test
-#             )
-
-#             # ---------------------------------------------------
-#             # Final Prediction Score
-#             # ---------------------------------------------------
-
-#             final_predictions = final_model.predict(
-#                 X_test
-#             )
-
-#             final_r2_score = r2_score(
-#                 y_test,
-#                 final_predictions
-#             )
-
-#             logging.info(
-#                 f"Final R2 Score: {final_r2_score}"
-#             )
-
-#             return final_r2_score
-
-#         except Exception as e:
-#             raise CustomException(e, sys)
+                "LightGBM": LGBMRegressor()
+            }
+
+            # =========================
+            # Hyperparameters
+            # =========================
+
+            params = {
+
+                "Linear Regression": {},
+
+                "Ridge Regression": {
+                    "alpha": [0.01, 0.1, 1, 10]
+                },
+
+                "Lasso Regression": {
+                    "alpha": [0.001, 0.01, 0.1, 1]
+                },
+
+                "Decision Tree": {
+                    "max_depth": [5, 10, 20],
+                    "min_samples_split": [2, 5, 10]
+                },
+
+                "Random Forest": {
+                    "n_estimators": [50, 100],
+                    "max_depth": [10, 20]
+                },
+
+                "Support Vector Machine": {
+                    "C": [0.1, 1, 10],
+                    "kernel": ["linear", "rbf"]
+                },
+
+                "XGBoost": {
+                    "learning_rate": [0.01, 0.1],
+                    "n_estimators": [100, 200]
+                },
+
+                "LightGBM": {
+                    "learning_rate": [0.01, 0.1],
+                    "n_estimators": [100, 200]
+                }
+            }
+
+            # =========================
+            # Evaluate Models
+            # =========================
+
+            model_report = evaluate_models(
+                X_train=X_train,
+                y_train=y_train,
+                X_test=X_test,
+                y_test=y_test,
+                models=models,
+                param=params
+            )
+
+            logging.info(f"Model Report: {model_report}")
+
+            # =========================
+            # =========================
+            # Best Model Selection
+            # =========================
+
+            best_model_name = max(
+                model_report,
+                key=lambda x: model_report[x]["test_r2_score"]
+            )
+
+            best_model_score = model_report[
+                best_model_name
+            ]["test_r2_score"]
+
+            best_model = models[best_model_name]
+
+            logging.info(
+                f"Best Model Found: {best_model_name}"
+            )
+
+            logging.info(
+                f"Best Model Test R2 Score: {best_model_score}"
+            )
+
+            # =========================
+            # Train Best Model
+            # =========================
+
+            best_model.fit(X_train, y_train)
+
+            # =========================
+            # Voting Regressor
+            # =========================
+
+            voting_regressor = VotingRegressor(
+                estimators=[
+                    ("rf", RandomForestRegressor()),
+                    ("xgb", XGBRegressor(
+                        objective="reg:squarederror",
+                        verbosity=0
+                    )),
+                    ("lgbm", LGBMRegressor())
+                ]
+            )
+
+            voting_regressor.fit(X_train, y_train)
+
+            # =========================
+            # Stacking Regressor
+            # =========================
+
+            stacking_regressor = StackingRegressor(
+                estimators=[
+                    ("rf", RandomForestRegressor()),
+                    ("xgb", XGBRegressor(
+                        objective="reg:squarederror",
+                        verbosity=0
+                    )),
+                    ("lgbm", LGBMRegressor())
+                ],
+                final_estimator=LinearRegression()
+            )
+
+            stacking_regressor.fit(X_train, y_train)
+
+            # =========================
+            # Evaluate Stacking Model
+            # =========================
+
+            predicted = stacking_regressor.predict(
+                X_test
+            )
+
+            r2_square = r2_score(
+                y_test,
+                predicted
+            )
+
+            logging.info(
+                f"Stacking Regressor R2 Score: {r2_square}"
+            )
+
+            # =========================
+            # Save Final Model
+            # =========================
+
+            save_object(
+                file_path=self.model_trainer_config.trained_model_file_path,
+                obj=stacking_regressor
+            )
+
+            logging.info(
+                "Final model saved successfully"
+            )
+
+            # =========================
+            # SHAP Explainer
+            # =========================
+
+            logging.info(
+                "Creating SHAP explainer"
+            )
+
+            explainer = shap.Explainer(
+                stacking_regressor.predict,
+                X_train
+            )
+
+            save_object(
+                file_path=self.model_trainer_config.shap_explainer_path,
+                obj=explainer
+            )
+
+            logging.info(
+                "SHAP explainer saved successfully"
+            )
+
+            return r2_square
+
+        except Exception as e:
+
+            raise CustomException(e, sys)
