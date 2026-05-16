@@ -76,151 +76,101 @@
 
         <form action="{{ url_for('predict_datapoint') }}" method="post">
 
-            <h2>
-                <legend>Enter House Details</legend>
-            </h2>
+            <h2><legend>Enter House Details</legend></h2>
 
-            <!-- Overall Quality -->
+            <!-- FIXED: safer naming alignment -->
+
             <div class="mb-3">
-                <label class="form-label">Overall Quality (1-10)</label>
-                <input class="form-control" type="number" name="Overall Qual"
-                    placeholder="Enter Overall Quality" min="1" max="10" required />
+                <label>Overall Quality (1-10)</label>
+                <input class="form-control" type="number" name="Overall Qual" required>
             </div>
 
-            <!-- Living Area -->
             <div class="mb-3">
-                <label class="form-label">Ground Living Area (sq ft)</label>
-                <input class="form-control" type="number" name="Gr Liv Area"
-                    placeholder="Enter Living Area" required />
+                <label>Gr Liv Area</label>
+                <input class="form-control" type="number" name="Gr Liv Area" required>
             </div>
 
-            <!-- Garage Cars -->
             <div class="mb-3">
-                <label class="form-label">Garage Capacity</label>
-                <input class="form-control" type="number" name="Garage Cars"
-                    placeholder="Enter Garage Capacity" required />
+                <label>Garage Area</label>
+                <input class="form-control" type="number" name="Garage Area" required>
             </div>
 
-            <!-- Garage Area -->
             <div class="mb-3">
-                <label class="form-label">Garage Area</label>
-                <input class="form-control" type="number" name="Garage Area"
-                    placeholder="Enter Garage Area" required />
+                <label>Total Basement SF</label>
+                <input class="form-control" type="number" name="Total Bsmt SF" required>
             </div>
 
-            <!-- Total Basement -->
             <div class="mb-3">
-                <label class="form-label">Total Basement Area</label>
-                <input class="form-control" type="number" name="Total Bsmt SF"
-                    placeholder="Enter Basement Area" required />
+                <label>Year Built</label>
+                <input class="form-control" type="number" name="Year Built" required>
             </div>
 
-            <!-- Full Bath -->
             <div class="mb-3">
-                <label class="form-label">Full Bathrooms</label>
-                <input class="form-control" type="number" name="Full Bath"
-                    placeholder="Enter Number of Bathrooms" required />
+                <label>Fireplaces</label>
+                <input class="form-control" type="number" name="Fireplaces" required>
             </div>
 
-            <!-- Year Built -->
+            <!-- CATEGORICAL FEATURES (UNCHANGED) -->
+
             <div class="mb-3">
-                <label class="form-label">Year Built</label>
-                <input class="form-control" type="number" name="Year Built"
-                    placeholder="Enter Year Built" required />
+                <label>MS Zoning</label>
+                <input class="form-control" type="text" name="MS Zoning" required>
             </div>
 
-            <!-- Neighborhood -->
             <div class="mb-3">
-                <label class="form-label">Neighborhood</label>
-
-                <select class="form-control" name="Neighborhood" required>
-
-                    <option selected disabled value="">
-                        Select Neighborhood
-                    </option>
-
-                    <option value="NAmes">NAmes</option>
-                    <option value="CollgCr">CollgCr</option>
-                    <option value="OldTown">OldTown</option>
-                    <option value="Edwards">Edwards</option>
-                    <option value="Somerst">Somerst</option>
-                    <option value="NridgHt">NridgHt</option>
-                    <option value="Gilbert">Gilbert</option>
-                    <option value="Sawyer">Sawyer</option>
-                    <option value="NWAmes">NWAmes</option>
-                    <option value="SawyerW">SawyerW</option>
-
-                </select>
+                <label>Neighborhood</label>
+                <input class="form-control" type="text" name="Neighborhood" required>
             </div>
 
-            <!-- House Style -->
             <div class="mb-3">
-                <label class="form-label">House Style</label>
-
-                <select class="form-control" name="House Style" required>
-
-                    <option selected disabled value="">
-                        Select House Style
-                    </option>
-
-                    <option value="1Story">1 Story</option>
-                    <option value="2Story">2 Story</option>
-                    <option value="1.5Fin">1.5 Finished</option>
-                    <option value="SLvl">Split Level</option>
-
-                </select>
+                <label>House Style</label>
+                <input class="form-control" type="text" name="House Style" required>
             </div>
 
-            <!-- Kitchen Quality -->
             <div class="mb-3">
-                <label class="form-label">Kitchen Quality</label>
-
-                <select class="form-control" name="Kitchen Qual" required>
-
-                    <option selected disabled value="">
-                        Select Kitchen Quality
-                    </option>
-
-                    <option value="Ex">Excellent</option>
-                    <option value="Gd">Good</option>
-                    <option value="TA">Typical/Average</option>
-                    <option value="Fa">Fair</option>
-
-                </select>
+                <label>Exterior 1st</label>
+                <input class="form-control" type="text" name="Exterior 1st" required>
             </div>
 
-            <!-- Central Air -->
             <div class="mb-3">
-                <label class="form-label">Central Air</label>
-
-                <select class="form-control" name="Central Air" required>
-
-                    <option selected disabled value="">
-                        Select Central Air
-                    </option>
-
-                    <option value="Y">Yes</option>
-                    <option value="N">No</option>
-
-                </select>
+                <label>Exter Qual</label>
+                <input class="form-control" type="text" name="Exter Qual" required>
             </div>
 
-            <!-- Submit Button -->
             <div class="mb-3">
-                <input class="btn btn-primary"
-                    type="submit"
-                    value="Predict House Price"
-                    required />
+                <label>Foundation</label>
+                <input class="form-control" type="text" name="Foundation" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Heating QC</label>
+                <input class="form-control" type="text" name="Heating QC" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Kitchen Qual</label>
+                <input class="form-control" type="text" name="Kitchen Qual" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Garage Type</label>
+                <input class="form-control" type="text" name="Garage Type" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Sale Condition</label>
+                <input class="form-control" type="text" name="Sale Condition" required>
+            </div>
+
+            <div class="mb-3">
+                <input class="btn" type="submit" value="Predict House Price">
             </div>
 
         </form>
 
-        <h2>
-            Predicted House Price is {{ results }}
-        </h2>
+        <h2>Predicted House Price is {{ results }}</h2>
 
     </div>
 
 </body>
-
 </html>
