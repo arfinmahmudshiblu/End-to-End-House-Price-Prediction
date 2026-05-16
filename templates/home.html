@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ames Housing Price Prediction</title>
+
+    <style>
+
+        body{
+            background-color:#f4f4f4;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .login{
+            width: 60%;
+            margin: auto;
+            margin-top: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+
+        h1{
+            text-align:center;
+            color:#333;
+        }
+
+        .mb-3{
+            margin-bottom:15px;
+        }
+
+        label{
+            font-weight:bold;
+        }
+
+        .form-control{
+            width:100%;
+            padding:10px;
+            border-radius:5px;
+            border:1px solid #ccc;
+            margin-top:5px;
+        }
+
+        .btn{
+            background-color:#007BFF;
+            color:white;
+            padding:12px;
+            border:none;
+            border-radius:5px;
+            width:100%;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        .btn:hover{
+            background-color:#0056b3;
+        }
+
+        h2{
+            text-align:center;
+            color:green;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="login">
+
+        <h1>Ames Housing Price Prediction</h1>
+
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+
+            <h2>
+                <legend>Enter House Details</legend>
+            </h2>
+
+            <!-- Overall Quality -->
+            <div class="mb-3">
+                <label class="form-label">Overall Quality (1-10)</label>
+                <input class="form-control" type="number" name="Overall Qual"
+                    placeholder="Enter Overall Quality" min="1" max="10" required />
+            </div>
+
+            <!-- Living Area -->
+            <div class="mb-3">
+                <label class="form-label">Ground Living Area (sq ft)</label>
+                <input class="form-control" type="number" name="Gr Liv Area"
+                    placeholder="Enter Living Area" required />
+            </div>
+
+            <!-- Garage Cars -->
+            <div class="mb-3">
+                <label class="form-label">Garage Capacity</label>
+                <input class="form-control" type="number" name="Garage Cars"
+                    placeholder="Enter Garage Capacity" required />
+            </div>
+
+            <!-- Garage Area -->
+            <div class="mb-3">
+                <label class="form-label">Garage Area</label>
+                <input class="form-control" type="number" name="Garage Area"
+                    placeholder="Enter Garage Area" required />
+            </div>
+
+            <!-- Total Basement -->
+            <div class="mb-3">
+                <label class="form-label">Total Basement Area</label>
+                <input class="form-control" type="number" name="Total Bsmt SF"
+                    placeholder="Enter Basement Area" required />
+            </div>
+
+            <!-- Full Bath -->
+            <div class="mb-3">
+                <label class="form-label">Full Bathrooms</label>
+                <input class="form-control" type="number" name="Full Bath"
+                    placeholder="Enter Number of Bathrooms" required />
+            </div>
+
+            <!-- Year Built -->
+            <div class="mb-3">
+                <label class="form-label">Year Built</label>
+                <input class="form-control" type="number" name="Year Built"
+                    placeholder="Enter Year Built" required />
+            </div>
+
+            <!-- Neighborhood -->
+            <div class="mb-3">
+                <label class="form-label">Neighborhood</label>
+
+                <select class="form-control" name="Neighborhood" required>
+
+                    <option selected disabled value="">
+                        Select Neighborhood
+                    </option>
+
+                    <option value="NAmes">NAmes</option>
+                    <option value="CollgCr">CollgCr</option>
+                    <option value="OldTown">OldTown</option>
+                    <option value="Edwards">Edwards</option>
+                    <option value="Somerst">Somerst</option>
+                    <option value="NridgHt">NridgHt</option>
+                    <option value="Gilbert">Gilbert</option>
+                    <option value="Sawyer">Sawyer</option>
+                    <option value="NWAmes">NWAmes</option>
+                    <option value="SawyerW">SawyerW</option>
+
+                </select>
+            </div>
+
+            <!-- House Style -->
+            <div class="mb-3">
+                <label class="form-label">House Style</label>
+
+                <select class="form-control" name="House Style" required>
+
+                    <option selected disabled value="">
+                        Select House Style
+                    </option>
+
+                    <option value="1Story">1 Story</option>
+                    <option value="2Story">2 Story</option>
+                    <option value="1.5Fin">1.5 Finished</option>
+                    <option value="SLvl">Split Level</option>
+
+                </select>
+            </div>
+
+            <!-- Kitchen Quality -->
+            <div class="mb-3">
+                <label class="form-label">Kitchen Quality</label>
+
+                <select class="form-control" name="Kitchen Qual" required>
+
+                    <option selected disabled value="">
+                        Select Kitchen Quality
+                    </option>
+
+                    <option value="Ex">Excellent</option>
+                    <option value="Gd">Good</option>
+                    <option value="TA">Typical/Average</option>
+                    <option value="Fa">Fair</option>
+
+                </select>
+            </div>
+
+            <!-- Central Air -->
+            <div class="mb-3">
+                <label class="form-label">Central Air</label>
+
+                <select class="form-control" name="Central Air" required>
+
+                    <option selected disabled value="">
+                        Select Central Air
+                    </option>
+
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mb-3">
+                <input class="btn btn-primary"
+                    type="submit"
+                    value="Predict House Price"
+                    required />
+            </div>
+
+        </form>
+
+        <h2>
+            Predicted House Price is {{ results }}
+        </h2>
+
+    </div>
+
+</body>
+
+</html>

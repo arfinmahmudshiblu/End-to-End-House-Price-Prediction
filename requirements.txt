@@ -8,10 +8,15 @@ joblib
 flask-cors
 gunicorn
 pickle
+dill
 from-root
 plotly
 scipy
 xgboost
 catboost
+lightgbm
+statsmodels
+shap
+dump
 
-
+-e .

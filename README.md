@@ -22,3 +22,4 @@ pip install -r requirements.txt
 ```
 
 
+python -m src.components.data_ingestion
