@@ -1,0 +1,31 @@
+## Linear Regression:
+	Linear Regression হলো Machine Learning এবং Statistics এর একটি জনপ্রিয় অ্যালগরিদম, 
+	যা একটি dependent variable (target/output) এবং এক বা একাধিক independent variable
+	(feature/input) এর মধ্যে সম্পর্ক খুঁজে বের করে।
+
+	# সহজভাবে:
+	কোনো ইনপুট পরিবর্তন হলে আউটপুট কীভাবে পরিবর্তন হয়, তা একটি সরল রেখা (straight line) ব্যবহার করে বোঝানো হয়।
+
+	# বাস্তব উদাহরণ
+	House Price Prediction
+		Input: বাড়ির size
+		Output: বাড়ির price
+	Student Result Prediction
+		Input: Study hours
+		Output: Exam marks
+	Sales Prediction
+		Input: Advertisement cost
+		Output: Sales amount
+
+	# সংক্ষেপে:
+		Linear Regression এমন একটি algorithm যা data এর মধ্যে linear relationship 
+		খুঁজে বের করে এবং ভবিষ্যতের মান predict করে। এটি Machine 		
+		Learning শেখার সবচেয়ে গুরুত্বপূর্ণ ও basic algorithmগুলোর একটি।
+
+	# Machine Learning এ কোথায় ব্যবহার হয়?
+		Price Prediction
+		Forecasting
+		Risk Analysis
+		Business Analytics
+		Financial Modeling
+		Sales Estimation

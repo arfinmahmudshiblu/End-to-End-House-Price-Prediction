@@ -1,0 +1,40 @@
+## Ridge Regression:
+	Ridge Regression হলো Machine Learning এর একটি regression algorithm,
+	 যা মূলত Linear Regression এর উন্নত সংস্করণ।
+
+	# এটি ব্যবহার করা হয় যখন:
+	Feature অনেক বেশি থাকে
+	Features একে অপরের সাথে highly correlated হয়
+	Model overfitting করে
+	Ridge Regression model এর coefficient ছোট করে overfitting কমায়।
+
+	# মূল ধারণা:
+	Linear Regression কখনও কখনও training data খুব বেশি মুখস্থ করে ফেলে।
+	এটাকে বলে Overfitting।
+	Ridge Regression একটি penalty term যোগ করে coefficient ছোট রাখে।
+
+	# Ridge Regression এর বৈশিষ্ট্য
+	✅ Overfitting কমায়
+	✅ Multicollinearity handle করে
+	✅ সব feature রাখে
+	✅ Model stability বাড়ায়
+
+
+	# Ridge Regression কেন দরকার?
+		ধরো house price prediction এ:
+			Size
+			Bedrooms
+			Bathrooms
+			Area
+			Nearby schools
+			এই feature গুলো অনেক সময় একে অপরের সাথে সম্পর্কিত হয়।
+			এতে Linear Regression unstable হতে পারে।
+			Ridge Regression এই সমস্যা কমায়।
+
+
+## সংক্ষেপে
+Ridge Regression হলো Linear Regression এর regularized version, যা coefficient 
+ছোট করে model কে overfitting থেকে বাঁচায় এবং better prediction করতে সাহায্য করে।
+
+
+

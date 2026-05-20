@@ -1,0 +1,107 @@
+## Decision Tree:
+	Decision Tree হলো এমন একটি Machine Learning algorithm 
+	যা প্রশ্ন-উত্তরের মতো structure ব্যবহার করে decision নেয়। এটি data 
+	কে বিভিন্ন condition অনুযায়ী split করে prediction করে।
+	# এটি:
+	Classification
+	Regression
+	দুই কাজেই ব্যবহার করা যায়।
+
+#Weather?
+  ├── Sunny → Go Outside
+  ├── Rainy → Stay Home
+  └── Cloudy → Maybe
+
+# Decision Tree Structure:
+	1. Root Node
+	2. Decision Node
+	3. Leaf Node
+
+# Important Concepts:
+	# Entropy:
+		Data কতটা mixed বা impurity আছে তা মাপে।
+		Entropy কম মানে data বেশি pure।
+	
+	# Information Gain:
+		কোন split সবচেয়ে ভালো তা নির্ধারণ করে।
+		Information Gain যত বেশি হবে split তত ভালো।
+
+	# Gini Impurity:
+		আরেকটি impurity measure।	
+		Scikit-learn এ default হিসেবে Gini ব্যবহৃত হয়।
+	
+
+	# Overfitting Control:
+	Decision Tree overfitting কমানোর জন্য:
+	max_depth
+	min_samples_split
+	pruning	ব্যবহার করা হয়।
+
+
+# Decision Tree Parameters:
+1. max_depth:
+	max_depth নির্ধারণ করে Tree কত গভীর (deep) হবে।
+
+Depth = 1
+Weather?
+ ├── Sunny
+ └── Rainy
+
+Depth = 3: Tree সর্বোচ্চ 3 level পর্যন্ত যাবে
+Weather?
+ ├── Sunny
+ │     ├── Windy?
+ │     │      ├── Yes
+ │     │      └── No
+ └── Rainy
+
+Tree যত deep হবে:
+
+model তত complex হবে
+overfitting হওয়ার chance বাড়বে
+
+2. min_samples_split:
+	একটি node split হওয়ার জন্য minimum কত sample লাগবে তা নির্ধারণ করে।
+	
+#কেন দরকার?
+	এটি ছোট ছোট unnecessary split বন্ধ করে।
+	ফলে:
+	overfitting কমে
+	model stable হয়
+
+3. Pruning:
+      Pruning মানে অপ্রয়োজনীয় branch কেটে ফেলা।
+     
+	# কেন pruning দরকার?
+	Deep tree অনেক সময় training data মুখস্থ করে ফেলে।
+	এটিই overfitting।
+	Pruning tree কে simpler করে।
+
+# Types of Pruning
+
+1. Pre-Pruning
+Tree বড় হওয়ার আগেই stop করা।
+
+ব্যবহার হয়:
+max_depth
+min_samples_split
+
+2. Post-Pruning
+আগে full tree তৈরি হয়, পরে unnecessary branch remove করা হয়।
+
+
+# সংক্ষেপে:
+	max_depth → Tree এর depth control করে
+	min_samples_split → ছোট split বন্ধ করে
+	pruning → overfitting কমিয়ে simpler tree তৈরি করে
+
+
+
+
+
+
+
+
+
+
+

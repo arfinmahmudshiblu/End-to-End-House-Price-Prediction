@@ -1,0 +1,47 @@
+## House Price Prediction Web Application
+	1. Import Libraries
+		Flask → creates the website
+		pandas → handles data
+		PredictPipeline → predicts house price
+		CustomData → stores user input
+
+	2. Create Flask App
+		application = Flask(__name__)app = application
+		
+	3. Home Route (/)
+		@app.route('/')
+	   Opens the main webpage (index.html).
+
+	4. Prediction Route (/predictdata)
+		@app.route('/predictdata', methods=['GET', 'POST'])
+
+		GET request:
+			Shows the form page (home.html).
+		
+		POST request:
+			Takes user input from the form.
+			Creates a CustomData object.
+			Converts input into a DataFrame.
+			Sends data to the ML model for prediction.
+			Gets predicted house price.
+			Generates SHAP values (feature importance).
+			Displays prediction and top important features.
+
+	5. Prediction Example
+		results = predict_pipeline.predict(pred_df)
+		Predicts the house price.
+
+	6. SHAP Explanation
+		shap_df = predict_pipeline.shap_prediction(pred_df)
+		Explains which features affected the prediction most.
+
+	7. Run Flask App
+		app.run(host="0.0.0.0", debug=True)
+		Starts the web server.	
+
+
+
+
+
+
+	

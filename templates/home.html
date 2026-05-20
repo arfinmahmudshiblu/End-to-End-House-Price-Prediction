@@ -2,175 +2,392 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Ames Housing Price Prediction</title>
 
-    <style>
-
-        body{
-            background-color:#f4f4f4;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .login{
-            width: 60%;
-            margin: auto;
-            margin-top: 40px;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-        }
-
-        h1{
-            text-align:center;
-            color:#333;
-        }
-
-        .mb-3{
-            margin-bottom:15px;
-        }
-
-        label{
-            font-weight:bold;
-        }
-
-        .form-control{
-            width:100%;
-            padding:10px;
-            border-radius:5px;
-            border:1px solid #ccc;
-            margin-top:5px;
-        }
-
-        .btn{
-            background-color:#007BFF;
-            color:white;
-            padding:12px;
-            border:none;
-            border-radius:5px;
-            width:100%;
-            cursor:pointer;
-            font-size:16px;
-        }
-
-        .btn:hover{
-            background-color:#0056b3;
-        }
-
-        h2{
-            text-align:center;
-            color:green;
-        }
-
-    </style>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
 </head>
 
 <body>
 
-    <div class="login">
+    <div class="container mt-5">
 
-        <h1>Ames Housing Price Prediction</h1>
+        <div class="card shadow p-4">
 
-        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            <h1 class="text-center mb-4">
+                Ames Housing Price Prediction
+            </h1>
 
-            <h2><legend>Enter House Details</legend></h2>
+            <form action="{{ url_for('predict_datapoint') }}"
+                  method="post">
 
-            <!-- FIXED: safer naming alignment -->
+                <!-- ================================================= -->
+                <!-- Numerical Features -->
+                <!-- ================================================= -->
 
-            <div class="mb-3">
-                <label>Overall Quality (1-10)</label>
-                <input class="form-control" type="number" name="Overall Qual" required>
+                <h3 class="mb-3">Numerical Features</h3>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Overall Quality
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="overall_qual"
+                           placeholder="Enter Overall Quality"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Total Square Feet
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="total_sf"
+                           placeholder="Enter Total SF"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        House Age
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="house_age"
+                           placeholder="Enter House Age"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Ground Living Area
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="gr_liv_area"
+                           placeholder="Enter Ground Living Area"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        1st Floor SF
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="first_flr_sf"
+                           placeholder="Enter 1st Floor SF"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Garage Area
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="garage_area"
+                           placeholder="Enter Garage Area"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Basement Area
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="total_bsmt_sf"
+                           placeholder="Enter Basement Area"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Year Remodeled
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="year_remod_add"
+                           placeholder="Enter Year Remodeled"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Year Built
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="year_built"
+                           placeholder="Enter Year Built"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Fireplaces
+                    </label>
+
+                    <input class="form-control"
+                           type="number"
+                           name="fireplaces"
+                           placeholder="Enter Number of Fireplaces"
+                           required>
+                </div>
+
+                <!-- ================================================= -->
+                <!-- Categorical Features -->
+                <!-- ================================================= -->
+
+                <h3 class="mb-3 mt-4">
+                    Categorical Features
+                </h3>
+
+                <!-- MS Zoning -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        MS Zoning
+                    </label>
+
+                    <select class="form-control"
+                            name="ms_zoning"
+                            required>
+
+                        <option selected disabled value="">
+                            Select Zoning
+                        </option>
+
+                        <option value="RL">RL</option>
+                        <option value="RM">RM</option>
+                        <option value="FV">FV</option>
+                        <option value="RH">RH</option>
+                        <option value="C (all)">C (all)</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Neighborhood -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Neighborhood
+                    </label>
+
+                    <select class="form-control"
+                            name="neighborhood"
+                            required>
+
+                        <option selected disabled value="">
+                            Select Neighborhood
+                        </option>
+
+                        <option value="CollgCr">CollgCr</option>
+                        <option value="Veenker">Veenker</option>
+                        <option value="Crawfor">Crawfor</option>
+                        <option value="NoRidge">NoRidge</option>
+                        <option value="Mitchel">Mitchel</option>
+                        <option value="Somerst">Somerst</option>
+                        <option value="NWAmes">NWAmes</option>
+                        <option value="OldTown">OldTown</option>
+                        <option value="Sawyer">Sawyer</option>
+
+                    </select>
+
+                </div>
+
+                <!-- House Style -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        House Style
+                    </label>
+
+                    <select class="form-control"
+                            name="house_style"
+                            required>
+
+                        <option selected disabled value="">
+                            Select House Style
+                        </option>
+
+                        <option value="1Story">1 Story</option>
+                        <option value="2Story">2 Story</option>
+                        <option value="1.5Fin">1.5 Finished</option>
+                        <option value="SLvl">Split Level</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Exterior -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Exterior Material
+                    </label>
+
+                    <select class="form-control"
+                            name="exterior_1st"
+                            required>
+
+                        <option selected disabled value="">
+                            Select Exterior
+                        </option>
+
+                        <option value="VinylSd">VinylSd</option>
+                        <option value="MetalSd">MetalSd</option>
+                        <option value="Wd Sdng">Wd Sdng</option>
+                        <option value="HdBoard">HdBoard</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Kitchen Quality -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Kitchen Quality
+                    </label>
+
+                    <select class="form-control"
+                            name="kitchen_qual"
+                            required>
+
+                        <option selected disabled value="">
+                            Select Kitchen Quality
+                        </option>
+
+                        <option value="Ex">Excellent</option>
+                        <option value="Gd">Good</option>
+                        <option value="TA">Typical</option>
+                        <option value="Fa">Fair</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Garage Type -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Garage Type
+                    </label>
+
+                    <select class="form-control"
+                            name="garage_type"
+                            required>
+
+                        <option selected disabled value="">
+                            Select Garage Type
+                        </option>
+
+                        <option value="Attchd">Attached</option>
+                        <option value="Detchd">Detached</option>
+                        <option value="BuiltIn">Built In</option>
+                        <option value="Basment">Basement</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Sale Condition -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Sale Condition
+                    </label>
+
+                    <select class="form-control"
+                            name="sale_condition"
+                            required>
+
+                        <option selected disabled value="">
+                            Select Sale Condition
+                        </option>
+
+                        <option value="Normal">Normal</option>
+                        <option value="Abnorml">Abnormal</option>
+                        <option value="Partial">Partial</option>
+                        <option value="Family">Family</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Submit Button -->
+
+                <div class="mb-3">
+
+                    <input class="btn btn-primary w-100"
+                           type="submit"
+                           value="Predict House Price">
+
+                </div>
+
+            </form>
+
+            <!-- ================================================= -->
+            <!-- Prediction Result -->
+            <!-- ================================================= -->
+
+            <h2 class="text-center mt-4">
+
+                Predicted House Price:
+                {{ results }}
+
+            </h2>
+
+            <!-- ================================================= -->
+            <!-- SHAP Table -->
+            <!-- ================================================= -->
+
+            {% if shap_table %}
+
+            <div class="mt-5">
+
+                <h3>
+                    Top 10 Important Features
+                </h3>
+
+                {{ shap_table | safe }}
+
             </div>
 
-            <div class="mb-3">
-                <label>Gr Liv Area</label>
-                <input class="form-control" type="number" name="Gr Liv Area" required>
-            </div>
+            {% endif %}
 
-            <div class="mb-3">
-                <label>Garage Area</label>
-                <input class="form-control" type="number" name="Garage Area" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Total Basement SF</label>
-                <input class="form-control" type="number" name="Total Bsmt SF" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Year Built</label>
-                <input class="form-control" type="number" name="Year Built" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Fireplaces</label>
-                <input class="form-control" type="number" name="Fireplaces" required>
-            </div>
-
-            <!-- CATEGORICAL FEATURES (UNCHANGED) -->
-
-            <div class="mb-3">
-                <label>MS Zoning</label>
-                <input class="form-control" type="text" name="MS Zoning" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Neighborhood</label>
-                <input class="form-control" type="text" name="Neighborhood" required>
-            </div>
-
-            <div class="mb-3">
-                <label>House Style</label>
-                <input class="form-control" type="text" name="House Style" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Exterior 1st</label>
-                <input class="form-control" type="text" name="Exterior 1st" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Exter Qual</label>
-                <input class="form-control" type="text" name="Exter Qual" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Foundation</label>
-                <input class="form-control" type="text" name="Foundation" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Heating QC</label>
-                <input class="form-control" type="text" name="Heating QC" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Kitchen Qual</label>
-                <input class="form-control" type="text" name="Kitchen Qual" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Garage Type</label>
-                <input class="form-control" type="text" name="Garage Type" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Sale Condition</label>
-                <input class="form-control" type="text" name="Sale Condition" required>
-            </div>
-
-            <div class="mb-3">
-                <input class="btn" type="submit" value="Predict House Price">
-            </div>
-
-        </form>
-
-        <h2>Predicted House Price is {{ results }}</h2>
+        </div>
 
     </div>
 
 </body>
+
 </html>

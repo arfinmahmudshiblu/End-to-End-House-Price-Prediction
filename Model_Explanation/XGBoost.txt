@@ -1,0 +1,98 @@
+## XGBoost:
+    XGBoost হলো একটি highly optimized gradient boosting algorithm,
+          যা sequential Decision Tree ব্যবহার করে error কমায় এবং regularization
+          ব্যবহার করে overfitting control করে। এটি বর্তমানে সবচেয়ে powerful 
+    Machine Learning algorithms এর একটি।
+
+         # এর পূর্ণরূপ:
+       XGBoost = 'Extreme Gradient Boosting'
+
+   # ব্যবহার:
+	Kaggle competitions
+	Structured/tabular data
+	Prediction problems
+
+  # মূল ধারণা:
+	--XGBoost sequentially অনেক Decision Tree তৈরি করে।
+	 --প্রতিটি নতুন tree আগের tree এর ভুল (error) কমানোর চেষ্টা করে।
+
+	Tree 1 → কিছু ভুল
+	      ↓
+	Tree 2 → ভুল কমায়
+	      ↓
+	Tree 3 → আরও improve করে
+	এভাবে model improve হতে থাকে।
+
+  # XGBoost কেন এত জনপ্রিয়?
+    ✅ খুব accurate
+    ✅ Overfitting কমায়
+    ✅ Fast training
+    ✅ Parallel processing support করে
+    ✅ Missing value handle করতে পারে
+
+	# Regularization:
+		XGBoost এর সবচেয়ে গুরুত্বপূর্ণ feature হলো:
+		✅ L1 Regularization
+		✅ L2 Regularization
+		  ফলে:
+		     overfitting কম হয়
+		     model stable হয়
+
+### Important Parameters:
+	1. n_estimators
+		কত tree তৈরি হবে।
+		n_estimators=100
+
+	2. learning_rate:
+		প্রতিটি tree কত slowly শিখবে।
+		learning_rate=0.1
+
+		কম learning rate:
+		training slow
+		কিন্তু generalization ভালো
+
+	3. max_depth: 
+		Tree depth control করে।
+
+	4. subsample:
+		কত শতাংশ data ব্যবহার করবে।
+		XGBClassifier(subsample=0.8)
+		এটি overfitting কমায়।
+
+	5. colsample_bytree:
+		কত feature ব্যবহার হবে।
+		colsample_bytree=0.8
+		80% feature will be used from shown dataset.
+
+	## Advantages:
+	✅ High accuracy
+	✅ Regularization support
+	✅ Missing value handle করে
+	✅ Feature importance পাওয়া যায়
+	✅ Overfitting কম হয়
+
+
+## GridSearchCV:
+		GridSearchCV সব possible combination পরীক্ষা করে  best parameter বের করে।
+
+	# CV = Cross Validation
+	  cv=3; dataset 3 ভাগ হবে
+	        3 বার training/testing হবে
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

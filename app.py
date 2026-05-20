@@ -47,47 +47,49 @@ def predict_datapoint():
 
             # Numerical Features
 
-            overall_qual=float(
+            overall_qual=int(
                 request.form.get('Overall Qual')
             ),
 
-            total_sf=float(
-                request.form.get('TotalSF')
+            total_sf=int(
+                request.form.get('Total SF')
             ),
 
-            house_age=float(
-                request.form.get('HouseAge')
+            house_age=int(
+                request.form.get('House Age')
             ),
 
-            gr_liv_area=float(
+            gr_liv_area=int(
                 request.form.get('Gr Liv Area')
             ),
 
-            first_flr_sf=float(
+            first_flr_sf=int(
                 request.form.get('1st Flr SF')
             ),
 
-            garage_area=float(
+            garage_area=int(
                 request.form.get('Garage Area')
             ),
 
-            total_bsmt_sf=float(
+            total_bsmt_sf=int(
                 request.form.get('Total Bsmt SF')
             ),
 
-            year_remod_add=float(
+            year_remod_add=int(
                 request.form.get('Year Remod/Add')
             ),
 
-            year_built=float(
+            year_built=int(
                 request.form.get('Year Built')
             ),
 
-            fireplaces=float(
+            fireplaces=int(
                 request.form.get('Fireplaces')
             ),
 
+            # ==================================================
             # Categorical Features
+            # ==================================================
 
             ms_zoning=request.form.get(
                 'MS Zoning'
@@ -129,7 +131,6 @@ def predict_datapoint():
                 'Sale Condition'
             )
         )
-
         # ======================================================
         # Convert Data into DataFrame
         # ======================================================

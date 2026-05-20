@@ -1,0 +1,50 @@
+## Lasso Regression:
+	Lasso Regression হলো Machine Learning এর একটি জনপ্রিয় Regularization Technique,
+	যা Linear Regression এর overfitting কমানোর জন্য ব্যবহার করা হয়।
+
+	# Lasso এর পূর্ণরূপ:
+
+	----'Least Absolute Shrinkage and Selection Operator'
+
+	এটি coefficient ছোট করার পাশাপাশি কিছু coefficient কে পুরোপুরি 0 করে দেয়।
+
+	ফলে automatic feature selection হয়।
+
+	# কেন Lasso Regression দরকার?
+		ধরো তোমার dataset এ অনেক feature আছে:
+			Age
+			Salary
+			Experience
+			Height
+			Random unnecessary columns		
+			সব feature prediction এর জন্য গুরুত্বপূর্ণ নাও হতে পারে।
+			Lasso Regression অপ্রয়োজনীয় feature বাদ দিতে পারে।
+
+	# L1 Regularization
+		Lasso Regression কে বলা হয়:
+			L1 Regularization
+			কারণ এটি absolute value ব্যবহার করে।
+
+	# Lasso Regression এর সুবিধা
+		✅ Overfitting কমায়
+		✅ Automatic feature selection করে
+		✅ Unnecessary feature remove করে
+		✅ Simple model তৈরি করে
+
+	# কোথায় ব্যবহার হয়?
+		High-dimensional dataset
+		Feature selection
+		Finance
+		Medical data
+		Text classification
+		Predictive analytics
+
+	# সংক্ষেপে:
+	Lasso Regression হলো এমন একটি regression technique যা overfitting 
+	কমানোর পাশাপাশি অপ্রয়োজনীয় feature বাদ দেয়। তাই এটি model কে আরও simple এবং
+	 efficient করে তোলে।
+
+
+
+
+

@@ -1,0 +1,68 @@
+## Support Vector Machine:
+	Support Vector Machine (SVM) হলো একটি powerful supervised learning algorithm,
+	 যা maximum margin ব্যবহার করে data কে আলাদা করে এবং complex classification problem 
+	efficiently solve করতে পারে।
+
+	# ব্যবহার:
+	    1. Classification
+	    2. Regression
+	সবচেয়ে বেশি ব্যবহার হয় classification problem এ!
+
+	## SVM data কে বিভিন্ন class এ ভাগ করার জন্য একটি best boundary খুঁজে বের করে।
+	এই boundary কে বলা হয়: Hyperplane.
+
+	# Hyperplane:
+	   2D data হলে:
+	             Hyperplane = line
+
+	    3D data হলে:
+		    Hyperplane = plane
+
+	     Higher dimension এ:
+		     Hyperplane = decision boundary
+
+	# Support Vectors:
+		Boundary এর সবচেয়ে কাছের data point গুলোকে বলে Support Vectors.
+	# Margin:
+		Hyperplane এবং nearest data point এর দূরত্বকে margin বলে।
+		SVM চেষ্টা করে Margin maximize করতে
+		Margin যত বেশি, classification তত ভালো generalize করবে
+
+    # Types of SVM:
+	1. Linear SVM:
+	যখন data linearly separable হয়।
+	
+	2. Non-Linear SVM:
+	যখন data linearভাবে আলাদা করা যায় না।
+	তখন kernel ব্যবহার করা হয়।
+
+	  # Kernel Trick:
+		Kernel data কে higher dimension এ map করে।
+		Linear Kernel---Linear data.
+		Polynomial Kernel---Curved boundary
+		RBF Kernel---Complex boundary, সবচেয়ে জনপ্রিয় kernel।
+		Sigmoid Kernel---Neural network style
+
+
+	# Advantages:
+	✅ High accuracy
+	✅ High-dimensional data handle করতে পারে
+	✅ Overfitting কম হয়
+	✅ Complex boundary শিখতে পারে
+		
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+

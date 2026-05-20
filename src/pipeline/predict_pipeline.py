@@ -84,7 +84,7 @@ class PredictPipeline:
 
             preprocessor_path = os.path.join(
                 "artifacts",
-                "shap_explainer.pkl"
+                "preprocessor.pkl"
             )
 
             # ======================================================

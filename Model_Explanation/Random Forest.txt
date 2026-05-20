@@ -1,0 +1,94 @@
+## Random Forest:
+        Random Forest হলো অনেক Decision Tree এর সমষ্টি, যা একসাথে কাজ করে 
+	আরও accurate এবং stable prediction দেয়। এটি  Machine Learning 
+	এর সবচেয়ে জনপ্রিয় এবং powerful algorithms এর একটি।
+
+	# কেন নাম “Random Forest”?
+		Random → Randomভাবে data ও feature নির্বাচন করা হয়
+		Forest → অনেকগুলো tree এর সমষ্টি
+		মানে:
+		        অনেক Decision Tree মিলে একটি “Forest” তৈরি করে।
+
+### কীভাবে কাজ করে?
+	Step 1: Random Data Sampling
+		Dataset থেকে random sample নেওয়া হয়।
+		এটিকে বলে:
+			Bootstrap Sampling
+
+	Step 2: Multiple Decision Trees তৈরি
+	`	প্রতিটি sample দিয়ে আলাদা Decision Tree তৈরি হয়।
+
+	Step 3: Random Features নির্বাচন
+	সব feature ব্যবহার না করে random কিছু feature নেওয়া হয়।
+
+	Step 4: Final Prediction
+	Classification এ:
+	Majority Voting ব্যবহার হয়।
+	Tree1 → Cat
+	Tree2 → Dog
+	Tree3 → Cat
+
+	Final → Cat
+	
+	Regression এ:
+		সব tree এর average নেওয়া হয়।
+Dataset
+   ↓
+Multiple Random Samples
+   ↓
+Many Decision Trees
+   ↓
+Combine Results
+   ↓
+Final Prediction
+
+# কেন Random Forest ভালো?
+	অনেক tree একসাথে ব্যবহার করলে:
+	error কমে
+	stability বাড়ে
+	accuracy improve হয়
+
+# Important Parameters:
+
+	1. n_estimators:
+		কতগুলো tree থাকবে।
+		n_estimator=100; 100টি tree তৈরি হবে
+
+	2. max_depth:
+		প্রতিটি tree কত deep হবে।
+		max_depth=5; '5' porjonto depth hobe.
+
+	3. min_samples_split:
+		Node split হওয়ার minimum sample।
+		min_samples_split=4; That means '4' times kore data gulo split hobe.
+
+	4. max_features
+	কত feature randomভাবে নেওয়া হবে।
+
+	# Advantages:
+	✅ High accuracy
+	✅ Overfitting কম হয়
+	✅ Non-linear data handle করতে পারে
+	✅ Feature importance বের করতে পারে
+	✅ Missing data কিছুটা handle করতে পারে
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

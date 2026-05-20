@@ -1,0 +1,86 @@
+## LightGBM:
+        LightGBM হলো একটি fast এবং efficient gradient boosting algorithm, 
+	যা leaf-wise tree growth ব্যবহার করে খুব দ্রুত এবং accurate prediction করতে 
+	পারে। এটি বর্তমানে Machine Learning এর সবচেয়ে জনপ্রিয় boosting algorithms এর একটি।
+	
+	LightGBM হলো Machine Learning ভিত্তিক একটি powerful boosting algorithm, যা Microsoft তৈরি করেছে।
+	এর পূর্ণরূপ:
+	Light Gradient Boosting Machine
+	এটি খুব দ্রুত (fast), memory efficient এবং large dataset এ খুব ভালো কাজ করে।
+
+	# Gradient Boosting কী?
+		Gradient Boosting এ:
+		অনেক ছোট model (Decision Tree) sequentially তৈরি হয়
+		প্রতিটি নতুন tree আগের tree এর error ঠিক করার চেষ্টা করে
+
+#LightGBM কেন জনপ্রিয়?
+কারণ এটি:
+	✅ খুব fast
+	✅ কম memory ব্যবহার করে
+	✅ large dataset handle করতে পারে
+	✅ high accuracy দেয়
+	✅ Kaggle competition এ খুব জনপ্রিয়
+
+
+# LightGBM কীভাবে কাজ করে?
+এটি সাধারণত Decision Tree ব্যবহার করে boosting করে।
+
+Tree 1 → কিছু error
+      ↓
+Tree 2 → error কমায়
+      ↓
+Tree 3 → আরও improve করে
+
+# LightGBM
+Leaf-wise grow করে।
+        Root
+       /    \
+      A      B
+            / \
+যে leaf এ error বেশি, সেটি আগে grow করে।
+ফলে:
+faster learning
+better accuracy
+	# Important Features:
+
+		1. Leaf-wise Growth
+		LightGBM leaf-wise tree growth ব্যবহার করে।
+		এটি সাধারণ boosting model এর চেয়ে দ্রুত ভালো result দেয়।
+
+		2. Histogram-based Learning
+		Data কে bucket এ ভাগ করে training speed বাড়ায়।
+
+		3. GOSS
+		Gradient-based One-Side Sampling
+		Important sample রেখে training faster করে।
+
+		4. EFB
+		Exclusive Feature Bundling
+		কম memory ব্যবহার করতে সাহায্য করে।
+
+# Important Parameters:
+
+	1. n_estimators
+	2. learning_rate: প্রতিটি tree কত slowly শিখবে।
+			  learning_rate=0.1; কম learning rate → better generalization
+	3. max_depth
+	4. num_leaves: একটি tree এ কত leaf থাকবে।
+			num_leaves=31
+
+# Advantages
+
+	✅ খুব দ্রুত training
+	✅ High accuracy
+	✅ Large dataset এ efficient
+	✅ Less memory usage
+	✅ Feature importance পাওয়া যায়
+			
+
+
+
+
+
+
+
+
+
