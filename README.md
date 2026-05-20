@@ -45,9 +45,15 @@
 - Linear Regression
 - Decision Tree
 - Random Forest
+- Ridge Regression
+- Lasso Regression
 - XGBoost
 - Support Vector Machine
 - LightGBM
+
+# Regressor
+- Stacking Regressor
+- Voting Regressor
 
 # Common Challenges
 - Missing values

@@ -152,25 +152,25 @@ class CustomData:
         # Numerical Features
         # ======================================================
 
-        overall_qual: float,
+        overall_qual: int,
 
-        total_sf: float,
+        total_sf: int,
 
-        house_age: float,
+        house_age: int,
 
-        gr_liv_area: float,
+        gr_liv_area: int,
 
-        first_flr_sf: float,
+        first_flr_sf: int,
 
-        garage_area: float,
+        garage_area: int,
 
-        total_bsmt_sf: float,
+        total_bsmt_sf: int,
 
-        year_remod_add: float,
+        year_remod_add: int,
 
-        year_built: float,
+        year_built: int,
 
-        fireplaces: float,
+        fireplaces: int,
 
         # ======================================================
         # Categorical Features
