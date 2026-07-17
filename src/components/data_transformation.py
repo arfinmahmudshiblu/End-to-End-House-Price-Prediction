@@ -1,9 +1,9 @@
 import os
 import sys
-from dataclasses import dataclass
-
 import numpy as np
 import pandas as pd
+
+from dataclasses import dataclass
 
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
@@ -15,6 +15,10 @@ from src.logger import logging
 from src.utils import save_object
 
 
+# ======================================================
+# Config
+# ======================================================
+
 @dataclass
 class DataTransformationConfig:
     preprocessor_obj_file_path = os.path.join(
@@ -23,169 +27,139 @@ class DataTransformationConfig:
     )
 
 
-class DataTransformation:
-    def __init__(self):
-        self.data_transformation_config = DataTransformationConfig()
+# ======================================================
+# Transformation Class
+# ======================================================
 
-    def get_data_transformer_object(self, df):
-        """
-        Creates preprocessing pipelines for
-        numerical and categorical features.
-        """
+class DataTransformation:
+
+    def __init__(self):
+        self.config = DataTransformationConfig()
+
+    # ==================================================
+    # Preprocessor
+    # ==================================================
+
+    def get_data_transformer_object(self):
 
         try:
-            target_column_name = "SalePrice"
 
-            # Remove target column
-            input_df = df.drop(columns=[target_column_name])
+            numerical_columns = [
+                "Overall Qual",
+                "Overall Cond",
+                "TotalBsmtSF",
+                "1stFlrSF",
+                "GrLivArea",
+                "GarageArea"
+            ]
 
-            # Numerical columns
-            numerical_columns = input_df.select_dtypes(
-                exclude="object"
-            ).columns.tolist()
+            categorical_columns = [
+                "MS Zoning",
+                "Neighborhood",
+                "House Style",
+                "Heating QC",
+                "Central Air",
+                "Kitchen Qual",
+                "Garage Type",
+                "Sale Condition"
+            ]
 
-            # Categorical columns
-            categorical_columns = input_df.select_dtypes(
-                include="object"
-            ).columns.tolist()
+            logging.info(f"Numerical Columns: {numerical_columns}")
+            logging.info(f"Categorical Columns: {categorical_columns}")
 
-            logging.info(f"Numerical columns: {numerical_columns}")
-            logging.info(f"Categorical columns: {categorical_columns}")
+            # ---------------------------
+            # Numerical Pipeline
+            # ---------------------------
+            num_pipeline = Pipeline([
+                ("imputer", SimpleImputer(strategy="median")),
+                ("scaler", StandardScaler())
+            ])
 
-            # Numerical pipeline
-            num_pipeline = Pipeline(
-                steps=[
-                    ("imputer", SimpleImputer(strategy="median")),
-                    ("scaler", StandardScaler())
-                ]
-            )
+            # ---------------------------
+            # Categorical Pipeline
+            # ---------------------------
+            cat_pipeline = Pipeline([
+                ("imputer", SimpleImputer(strategy="most_frequent")),
+                ("one_hot_encoder", OneHotEncoder(handle_unknown="ignore"))
+            ])
 
-            # Categorical pipeline
-            cat_pipeline = Pipeline(
-                steps=[
-                    ("imputer", SimpleImputer(strategy="most_frequent")),
-
-                    (
-                        "one_hot_encoder",
-                        OneHotEncoder(
-                            handle_unknown="ignore",
-                            sparse_output=False
-                        )
-                    )
-                ]
-            )
-
-            # Full preprocessing object
-            preprocessor = ColumnTransformer(
-                transformers=[
-                    (
-                        "num_pipeline",
-                        num_pipeline,
-                        numerical_columns
-                    ),
-                    (
-                        "cat_pipeline",
-                        cat_pipeline,
-                        categorical_columns
-                    )
-                ]
-            )
-
-            logging.info(
-                "Preprocessing object created successfully"
-            )
+            # ---------------------------
+            # Column Transformer
+            # ---------------------------
+            preprocessor = ColumnTransformer([
+                ("num_pipeline", num_pipeline, numerical_columns),
+                ("cat_pipeline", cat_pipeline, categorical_columns)
+            ])
 
             return preprocessor
 
         except Exception as e:
             raise CustomException(e, sys)
 
-    def initiate_data_transformation(
-        self,
-        train_path,
-        test_path
-    ):
+    # ==================================================
+    # Transformation
+    # ==================================================
+
+    def initiate_data_transformation(self, train_path, test_path):
 
         try:
-            # Load datasets
             train_df = pd.read_csv(train_path)
             test_df = pd.read_csv(test_path)
 
-            logging.info(
-                "Train and test datasets loaded successfully"
-            )
+            logging.info("Train/Test loaded successfully")
 
-            target_column_name = "SalePrice"
+            target = "SalePrice"
 
-            # Get preprocessing object
-            preprocessing_obj = self.get_data_transformer_object(
-                train_df
-            )
+            preprocessor = self.get_data_transformer_object()
 
-            # Split input and target features
-            input_feature_train_df = train_df.drop(
-                columns=[target_column_name]
-            )
+            # ---------------------------
+            # Split features
+            # ---------------------------
+            X_train = train_df.drop(columns=[target])
+            y_train = train_df[target]
 
-            target_feature_train_df = train_df[
-                target_column_name
-            ]
+            # test may or may not have target
+            if target in test_df.columns:
+                X_test = test_df.drop(columns=[target])
+                y_test = test_df[target]
+            else:
+                X_test = test_df
+                y_test = None
 
-            input_feature_test_df = test_df.drop(
-                columns=[target_column_name]
-            )
+            # ---------------------------
+            # Fit transform train
+            # ---------------------------
+            X_train_arr = preprocessor.fit_transform(X_train)
 
-            target_feature_test_df = test_df[
-                target_column_name
-            ]
+            # transform test
+            X_test_arr = preprocessor.transform(X_test)
 
-            logging.info(
-                "Applying preprocessing object on datasets"
-            )
+            logging.info("Transformation completed")
 
-            # Transform training data
-            input_feature_train_arr = (
-                preprocessing_obj.fit_transform(
-                    input_feature_train_df
-                )
-            )
-
-            # Transform testing data
-            input_feature_test_arr = (
-                preprocessing_obj.transform(
-                    input_feature_test_df
-                )
-            )
-
-            logging.info(
-                "Preprocessing completed successfully"
-            )
-
-            # Combine input features with target
-            train_arr = np.c_[
-                input_feature_train_arr,
-                np.array(target_feature_train_df)
-            ]
-
-            test_arr = np.c_[
-                input_feature_test_arr,
-                np.array(target_feature_test_df)
-            ]
-
-            # Save preprocessing object
+            # ---------------------------
+            # Save preprocessor
+            # ---------------------------
             save_object(
-                file_path=self.data_transformation_config.preprocessor_obj_file_path,
-                obj=preprocessing_obj
+                file_path=self.config.preprocessor_obj_file_path,
+                obj=preprocessor
             )
 
-            logging.info(
-                "Preprocessor pickle file saved successfully"
-            )
+            logging.info("Preprocessor saved successfully")
+
+            # ---------------------------
+            # Return clean outputs
+            # ---------------------------
+            if y_test is not None:
+                return (
+                    np.c_[X_train_arr, y_train],
+                    np.c_[X_test_arr, y_test],
+                    self.config.preprocessor_obj_file_path
+                )
 
             return (
-                train_arr,
-                test_arr,
-                self.data_transformation_config.preprocessor_obj_file_path
+                np.c_[X_train_arr, y_train],
+                X_test_arr,
+                self.config.preprocessor_obj_file_path
             )
 
         except Exception as e:

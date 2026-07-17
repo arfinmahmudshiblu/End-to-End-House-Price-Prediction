@@ -7,7 +7,7 @@ from src.pipeline.predict_pipeline import (
 )
 
 # ======================================================
-# Flask Application
+# Flask App Initialization
 # ======================================================
 
 application = Flask(__name__)
@@ -39,147 +39,149 @@ def predict_datapoint():
 
     else:
 
-        # ======================================================
-        # Collect User Input
-        # ======================================================
-
-        data = CustomData(
-
-            # Numerical Features
-
-            overall_qual=int(
-                request.form.get('Overall Qual')
-            ),
-
-            total_sf=int(
-                request.form.get('Total SF')
-            ),
-
-            house_age=int(
-                request.form.get('House Age')
-            ),
-
-            gr_liv_area=int(
-                request.form.get('Gr Liv Area')
-            ),
-
-            first_flr_sf=int(
-                request.form.get('1st Flr SF')
-            ),
-
-            garage_area=int(
-                request.form.get('Garage Area')
-            ),
-
-            total_bsmt_sf=int(
-                request.form.get('Total Bsmt SF')
-            ),
-
-            year_remod_add=int(
-                request.form.get('Year Remod/Add')
-            ),
-
-            year_built=int(
-                request.form.get('Year Built')
-            ),
-
-            fireplaces=int(
-                request.form.get('Fireplaces')
-            ),
+        try:
 
             # ==================================================
-            # Categorical Features
+            # Collect Input Data From Form
             # ==================================================
 
-            ms_zoning=request.form.get(
-                'MS Zoning'
-            ),
+            data = CustomData(
 
-            neighborhood=request.form.get(
-                'Neighborhood'
-            ),
+                # ==============================================
+                # Numerical Features
+                # ==============================================
 
-            house_style=request.form.get(
-                'House Style'
-            ),
+                overall_qual=int(
+                    request.form.get('Overall Qual')
+                ),
 
-            exterior_1st=request.form.get(
-                'Exterior 1st'
-            ),
+                overall_cond=int(
+                    request.form.get('Overall Cond')
+                ),
 
-            exter_qual=request.form.get(
-                'Exter Qual'
-            ),
+                total_bsmt_sf=float(
+                    request.form.get('Total Bsmt SF')
+                ),
 
-            foundation=request.form.get(
-                'Foundation'
-            ),
+                first_flr_sf=int(
+                    request.form.get('1st Flr SF')
+                ),
 
-            heating_qc=request.form.get(
-                'Heating QC'
-            ),
+                gr_liv_area=int(
+                    request.form.get('Gr Liv Area')
+                ),
 
-            kitchen_qual=request.form.get(
-                'Kitchen Qual'
-            ),
+                garage_area=float(
+                    request.form.get('Garage Area')
+                ),
 
-            garage_type=request.form.get(
-                'Garage Type'
-            ),
+                # ==============================================
+                # Categorical Features
+                # ==============================================
 
-            sale_condition=request.form.get(
-                'Sale Condition'
+                ms_zoning=request.form.get(
+                    'MS Zoning'
+                ),
+
+                neighborhood=request.form.get(
+                    'Neighborhood'
+                ),
+
+                house_style=request.form.get(
+                    'House Style'
+                ),
+
+                heating_qc=request.form.get(
+                    'Heating QC'
+                ),
+
+                central_air=request.form.get(
+                    'Central Air'
+                ),
+
+                kitchen_qual=request.form.get(
+                    'Kitchen Qual'
+                ),
+
+                garage_type=request.form.get(
+                    'Garage Type'
+                ),
+
+                sale_condition=request.form.get(
+                    'Sale Condition'
+                )
             )
-        )
-        # ======================================================
-        # Convert Data into DataFrame
-        # ======================================================
 
-        pred_df = data.get_data_as_data_frame()
+            # ==================================================
+            # Convert Input Into DataFrame
+            # ==================================================
 
-        print(pred_df)
+            pred_df = data.get_data_as_data_frame()
 
-        print("Before Prediction")
+            print("\nInput DataFrame")
+            print(pred_df)
 
-        # ======================================================
-        # Prediction Pipeline
-        # ======================================================
+            # ==================================================
+            # Prediction Pipeline
+            # ==================================================
 
-        predict_pipeline = PredictPipeline()
+            predict_pipeline = PredictPipeline()
 
-        print("Mid Prediction")
+            # ==================================================
+            # House Price Prediction
+            # ==================================================
 
-        # House Price Prediction
-        results = predict_pipeline.predict(pred_df)
+            results = predict_pipeline.predict(
+                pred_df
+            )
 
-        print("After Prediction")
+            predicted_price = round(
+                results[0],
+                2
+            )
 
-        # ======================================================
-        # SHAP Value Prediction
-        # ======================================================
+            print("\nPredicted Price:")
+            print(predicted_price)
 
-        shap_df = predict_pipeline.shap_prediction(
-            pred_df
-        )
+            # ==================================================
+            # SHAP Feature Importance
+            # ==================================================
 
-        # Top 10 Important Features
-        shap_table = shap_df.head(10).to_html(
-            classes='table table-striped',
-            index=False
-        )
+            shap_df = predict_pipeline.shap_prediction(
+                pred_df
+            )
 
-        # ======================================================
-        # Render Result
-        # ======================================================
+            # Top 10 Important Features
+            shap_table = shap_df.head(10).to_html(
 
-        return render_template(
+                classes="table table-bordered table-striped",
 
-            'home.html',
+                index=False
+            )
 
-            results=round(results[0], 2),
+            # ==================================================
+            # Render Template
+            # ==================================================
 
-            shap_table=shap_table
-        )
+            return render_template(
+
+                'home.html',
+
+                results=predicted_price,
+
+                shap_table=shap_table
+            )
+
+        except Exception as e:
+
+            print("Error:", e)
+
+            return render_template(
+
+                'home.html',
+
+                results="Prediction Error Occurred"
+            )
 
 
 # ======================================================
@@ -191,6 +193,8 @@ if __name__ == "__main__":
     app.run(
 
         host="0.0.0.0",
+
+        port=5000,
 
         debug=True
     )

@@ -58,8 +58,10 @@
 # Common Challenges
 - Missing values
 - Categorical encoding
+- Model Overfitting
 - Outliers
 - Feature selection
+- Deployment Issues
 
 # Conclusion
 - This project successfully built and deployed a predictive model for estimating housing prices in Ames, Iowa. The model provides accurate predictions and is accessible through a user-friendly Flask application. The insights gained from this project can be applied to similar real estate prediction tasks.
@@ -102,4 +104,50 @@ pip install -r requirements.txt
 ```bash
 python -m src.components.data_ingestion
 ```
+## Project Structure
 
+```bash
+House Price Prediction/
+│
+├── artifacts/
+│   ├── model.pkl
+│   ├── preprocessor.pkl
+│   ├── train.csv
+│   └── test.csv
+│
+├── notebook/
+│   ├── data
+│   │    └── ames_housing.csv
+│   └── House_Price_Prediction.ipynb
+│
+├── src/
+│   ├── __init__.py
+│   │
+│   ├── components/
+│   │   ├── __init__.py
+│   │   ├── data_ingestion.py
+│   │   ├── data_transformation.py
+│   │   └── model_trainer.py
+│   │
+│   ├── pipeline/
+│   │   ├── __init__.py
+│   │   ├── predict_pipeline.py
+│   │   └── train_pipeline.py
+│   │
+│   ├── logger.py
+│   ├── exception.py
+│   └── utils.py
+│
+├── templates/
+│   ├── index.html
+│   └── home.html
+│
+├── logs/
+│   └── logging.log
+│
+├── app.py
+├── requirements.txt
+├── setup.py
+├── README.md
+├── .gitignore
+└── LICENSE

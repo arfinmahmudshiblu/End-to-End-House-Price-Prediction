@@ -18,13 +18,13 @@ class PredictPipeline:
     def __init__(self):
         pass
 
+    # ======================================================
+    # House Price Prediction
+    # ======================================================
+
     def predict(self, features):
 
         try:
-
-            # ======================================================
-            # Paths
-            # ======================================================
 
             model_path = os.path.join(
                 "artifacts",
@@ -38,10 +38,7 @@ class PredictPipeline:
 
             print("Before Loading")
 
-            # ======================================================
-            # Load Model and Preprocessor
-            # ======================================================
-
+            # Load Model & Preprocessor
             model = load_object(
                 file_path=model_path
             )
@@ -52,17 +49,15 @@ class PredictPipeline:
 
             print("After Loading")
 
-            # ======================================================
             # Transform Input Data
-            # ======================================================
+            data_scaled = preprocessor.transform(
+                features
+            )
 
-            data_scaled = preprocessor.transform(features)
-
-            # ======================================================
             # Prediction
-            # ======================================================
-
-            preds = model.predict(data_scaled)
+            preds = model.predict(
+                data_scaled
+            )
 
             return preds
 
@@ -70,7 +65,7 @@ class PredictPipeline:
             raise CustomException(e, sys)
 
     # ======================================================
-    # SHAP Explanation
+    # SHAP Feature Importance
     # ======================================================
 
     def shap_prediction(self, features):
@@ -87,32 +82,24 @@ class PredictPipeline:
                 "preprocessor.pkl"
             )
 
-            # ======================================================
             # Load Objects
-            # ======================================================
-
             model = load_object(model_path)
 
             preprocessor = load_object(preprocessor_path)
 
-            # ======================================================
             # Transform Features
-            # ======================================================
+            data_scaled = preprocessor.transform(
+                features
+            )
 
-            data_scaled = preprocessor.transform(features)
-
-            # ======================================================
             # SHAP Explainer
-            # ======================================================
-
             explainer = shap.Explainer(model)
 
-            shap_values = explainer(data_scaled)
+            shap_values = explainer(
+                data_scaled
+            )
 
-            # ======================================================
-            # Feature Importance
-            # ======================================================
-
+            # Feature Importance DataFrame
             feature_importance = pd.DataFrame({
 
                 "Feature":
@@ -128,7 +115,9 @@ class PredictPipeline:
             )
 
             feature_importance = feature_importance.sort_values(
+
                 by="ABS_SHAP",
+
                 ascending=False
             )
 
@@ -154,23 +143,15 @@ class CustomData:
 
         overall_qual: int,
 
-        total_sf: int,
+        overall_cond: int,
 
-        house_age: int,
-
-        gr_liv_area: int,
+        total_bsmt_sf: float,
 
         first_flr_sf: int,
 
-        garage_area: int,
+        gr_liv_area: int,
 
-        total_bsmt_sf: int,
-
-        year_remod_add: int,
-
-        year_built: int,
-
-        fireplaces: int,
+        garage_area: float,
 
         # ======================================================
         # Categorical Features
@@ -182,13 +163,9 @@ class CustomData:
 
         house_style: str,
 
-        exterior_1st: str,
-
-        exter_qual: str,
-
-        foundation: str,
-
         heating_qc: str,
+
+        central_air: str,
 
         kitchen_qual: str,
 
@@ -204,23 +181,15 @@ class CustomData:
 
         self.overall_qual = overall_qual
 
-        self.total_sf = total_sf
-
-        self.house_age = house_age
-
-        self.gr_liv_area = gr_liv_area
-
-        self.first_flr_sf = first_flr_sf
-
-        self.garage_area = garage_area
+        self.overall_cond = overall_cond
 
         self.total_bsmt_sf = total_bsmt_sf
 
-        self.year_remod_add = year_remod_add
+        self.first_flr_sf = first_flr_sf
 
-        self.year_built = year_built
+        self.gr_liv_area = gr_liv_area
 
-        self.fireplaces = fireplaces
+        self.garage_area = garage_area
 
         # ======================================================
         # Categorical Features
@@ -232,13 +201,9 @@ class CustomData:
 
         self.house_style = house_style
 
-        self.exterior_1st = exterior_1st
-
-        self.exter_qual = exter_qual
-
-        self.foundation = foundation
-
         self.heating_qc = heating_qc
+
+        self.central_air = central_air
 
         self.kitchen_qual = kitchen_qual
 
@@ -247,7 +212,7 @@ class CustomData:
         self.sale_condition = sale_condition
 
     # ======================================================
-    # Convert Data into DataFrame
+    # Convert Input into DataFrame
     # ======================================================
 
     def get_data_as_data_frame(self):
@@ -262,23 +227,15 @@ class CustomData:
 
                 "Overall Qual": [self.overall_qual],
 
-                "TotalSF": [self.total_sf],
-
-                "HouseAge": [self.house_age],
-
-                "Gr Liv Area": [self.gr_liv_area],
-
-                "1st Flr SF": [self.first_flr_sf],
-
-                "Garage Area": [self.garage_area],
+                "Overall Cond": [self.overall_cond],
 
                 "Total Bsmt SF": [self.total_bsmt_sf],
 
-                "Year Remod/Add": [self.year_remod_add],
+                "1st Flr SF": [self.first_flr_sf],
 
-                "Year Built": [self.year_built],
+                "Gr Liv Area": [self.gr_liv_area],
 
-                "Fireplaces": [self.fireplaces],
+                "Garage Area": [self.garage_area],
 
                 # ======================================================
                 # Categorical Features
@@ -290,13 +247,9 @@ class CustomData:
 
                 "House Style": [self.house_style],
 
-                "Exterior 1st": [self.exterior_1st],
-
-                "Exter Qual": [self.exter_qual],
-
-                "Foundation": [self.foundation],
-
                 "Heating QC": [self.heating_qc],
+
+                "Central Air": [self.central_air],
 
                 "Kitchen Qual": [self.kitchen_qual],
 
@@ -305,7 +258,9 @@ class CustomData:
                 "Sale Condition": [self.sale_condition]
             }
 
-            return pd.DataFrame(custom_data_input_dict)
+            return pd.DataFrame(
+                custom_data_input_dict
+            )
 
         except Exception as e:
             raise CustomException(e, sys)
