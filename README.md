@@ -107,7 +107,7 @@ python -m src.components.data_ingestion
 
 ## Project Structure
 
-```bash
+```text
 House Price Prediction/
 │
 ├── artifacts/
