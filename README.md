@@ -113,6 +113,7 @@ House Price Prediction/
 ├── artifacts/
 │   ├── model.pkl
 │   ├── preprocessor.pkl
+│   ├── shap_explainer.pkl
 │   ├── train.csv
 │   └── test.csv
 │
