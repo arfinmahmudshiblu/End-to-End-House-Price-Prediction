@@ -2,199 +2,99 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ames Housing Price Prediction</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>
-        Ames Housing Price Prediction
-    </title>
-
-    <!-- Bootstrap CSS -->
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 
 </head>
 
-<body style="background-color:#f5f5f5;">
+<body class="bg-light">
 
-    <div class="container mt-5 mb-5">
+<div class="container mt-5">
 
-        <div class="card shadow-lg p-4">
+    <div class="card shadow p-4">
 
-            <!-- ========================================= -->
-            <!-- Heading -->
-            <!-- ========================================= -->
+        <h2 class="text-center mb-4">Ames Housing Price Prediction</h2>
 
-            <h1 class="text-center text-primary mb-4">
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
 
-                Ames Housing Price Prediction
+            <div class="row">
 
-            </h1>
+                <!-- Overall Qual -->
 
-            <!-- ========================================= -->
-            <!-- Form -->
-            <!-- ========================================= -->
-
-            <form action="{{ url_for('predict_datapoint') }}"
-                  method="post">
-
-                <!-- ===================================== -->
-                <!-- Numerical Features -->
-                <!-- ===================================== -->
-
-                <h3 class="mb-3 text-secondary">
-
-                    Numerical Features
-
-                </h3>
-
-                <!-- Overall Quality -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Overall Quality
-
-                    </label>
-
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Overall Quality</label>
                     <input type="number"
                            class="form-control"
                            name="Overall Qual"
-                           placeholder="Enter Overall Quality (1-10)"
                            min="1"
                            max="10"
                            required>
-
                 </div>
 
-                <!-- Overall Condition -->
+                <!-- Overall Cond -->
 
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Overall Condition
-
-                    </label>
-
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Overall Condition</label>
                     <input type="number"
                            class="form-control"
                            name="Overall Cond"
-                           placeholder="Enter Overall Condition (1-10)"
                            min="1"
                            max="10"
                            required>
-
                 </div>
 
-                <!-- Total Basement SF -->
+                <!-- Total Basement -->
 
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Total Basement SF
-
-                    </label>
-
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Total Basement SF</label>
                     <input type="number"
-                           step="0.01"
                            class="form-control"
                            name="Total Bsmt SF"
-                           placeholder="Enter Basement Area"
                            required>
-
                 </div>
 
-                <!-- 1st Floor SF -->
+                <!-- First Floor -->
 
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        1st Floor SF
-
-                    </label>
-
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">1st Floor SF</label>
                     <input type="number"
                            class="form-control"
                            name="1st Flr SF"
-                           placeholder="Enter 1st Floor Area"
                            required>
-
                 </div>
 
                 <!-- Ground Living Area -->
 
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Ground Living Area
-
-                    </label>
-
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ground Living Area</label>
                     <input type="number"
                            class="form-control"
                            name="Gr Liv Area"
-                           placeholder="Enter Living Area"
                            required>
-
                 </div>
 
                 <!-- Garage Area -->
 
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Garage Area
-
-                    </label>
-
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Garage Area</label>
                     <input type="number"
-                           step="0.01"
                            class="form-control"
                            name="Garage Area"
-                           placeholder="Enter Garage Area"
                            required>
-
                 </div>
-
-                <!-- ===================================== -->
-                <!-- Categorical Features -->
-                <!-- ===================================== -->
-
-                <h3 class="mt-5 mb-3 text-secondary">
-
-                    Categorical Features
-
-                </h3>
 
                 <!-- MS Zoning -->
 
-                <div class="mb-3">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">MS Zoning</label>
 
-                    <label class="form-label">
+                    <select class="form-select" name="MS Zoning" required>
 
-                        MS Zoning
-
-                    </label>
-
-                    <select class="form-control"
-                            name="MS Zoning"
-                            required>
-
-                        <option selected disabled value="">
-                            Select MS Zoning
-                        </option>
-
+                        <option value="">Select</option>
                         <option value="RL">RL</option>
                         <option value="RM">RM</option>
                         <option value="FV">FV</option>
@@ -207,28 +107,20 @@
 
                 <!-- Neighborhood -->
 
-                <div class="mb-3">
+                <div class="col-md-6 mb-3">
 
-                    <label class="form-label">
+                    <label class="form-label">Neighborhood</label>
 
-                        Neighborhood
+                    <select class="form-select" name="Neighborhood" required>
 
-                    </label>
+                        <option value="">Select</option>
 
-                    <select class="form-control"
-                            name="Neighborhood"
-                            required>
-
-                        <option selected disabled value="">
-                            Select Neighborhood
-                        </option>
-
+                        <option value="NAmes">NAmes</option>
                         <option value="CollgCr">CollgCr</option>
                         <option value="OldTown">OldTown</option>
                         <option value="Edwards">Edwards</option>
-                        <option value="NAmes">NAmes</option>
-                        <option value="NridgHt">NridgHt</option>
                         <option value="Sawyer">Sawyer</option>
+                        <option value="NridgHt">NridgHt</option>
 
                     </select>
 
@@ -236,21 +128,13 @@
 
                 <!-- House Style -->
 
-                <div class="mb-3">
+                <div class="col-md-6 mb-3">
 
-                    <label class="form-label">
+                    <label class="form-label">House Style</label>
 
-                        House Style
+                    <select class="form-select" name="House Style" required>
 
-                    </label>
-
-                    <select class="form-control"
-                            name="House Style"
-                            required>
-
-                        <option selected disabled value="">
-                            Select House Style
-                        </option>
+                        <option value="">Select</option>
 
                         <option value="1Story">1Story</option>
                         <option value="2Story">2Story</option>
@@ -263,26 +147,19 @@
 
                 <!-- Heating QC -->
 
-                <div class="mb-3">
+                <div class="col-md-6 mb-3">
 
-                    <label class="form-label">
+                    <label class="form-label">Heating QC</label>
 
-                        Heating Quality
+                    <select class="form-select" name="Heating QC" required>
 
-                    </label>
-
-                    <select class="form-control"
-                            name="Heating QC"
-                            required>
-
-                        <option selected disabled value="">
-                            Select Heating QC
-                        </option>
+                        <option value="">Select</option>
 
                         <option value="Ex">Excellent</option>
                         <option value="Gd">Good</option>
                         <option value="TA">Typical</option>
                         <option value="Fa">Fair</option>
+                        <option value="Po">Poor</option>
 
                     </select>
 
@@ -290,21 +167,13 @@
 
                 <!-- Central Air -->
 
-                <div class="mb-3">
+                <div class="col-md-6 mb-3">
 
-                    <label class="form-label">
+                    <label class="form-label">Central Air</label>
 
-                        Central Air
+                    <select class="form-select" name="Central Air" required>
 
-                    </label>
-
-                    <select class="form-control"
-                            name="Central Air"
-                            required>
-
-                        <option selected disabled value="">
-                            Select Central Air
-                        </option>
+                        <option value="">Select</option>
 
                         <option value="Y">Yes</option>
                         <option value="N">No</option>
@@ -313,28 +182,21 @@
 
                 </div>
 
-                <!-- Kitchen Quality -->
+                <!-- Kitchen Qual -->
 
-                <div class="mb-3">
+                <div class="col-md-6 mb-3">
 
-                    <label class="form-label">
+                    <label class="form-label">Kitchen Quality</label>
 
-                        Kitchen Quality
+                    <select class="form-select" name="Kitchen Qual" required>
 
-                    </label>
-
-                    <select class="form-control"
-                            name="Kitchen Qual"
-                            required>
-
-                        <option selected disabled value="">
-                            Select Kitchen Quality
-                        </option>
+                        <option value="">Select</option>
 
                         <option value="Ex">Excellent</option>
                         <option value="Gd">Good</option>
                         <option value="TA">Typical</option>
                         <option value="Fa">Fair</option>
+                        <option value="Po">Poor</option>
 
                     </select>
 
@@ -342,26 +204,20 @@
 
                 <!-- Garage Type -->
 
-                <div class="mb-3">
+                <div class="col-md-6 mb-3">
 
-                    <label class="form-label">
+                    <label class="form-label">Garage Type</label>
 
-                        Garage Type
+                    <select class="form-select" name="Garage Type" required>
 
-                    </label>
-
-                    <select class="form-control"
-                            name="Garage Type"
-                            required>
-
-                        <option selected disabled value="">
-                            Select Garage Type
-                        </option>
+                        <option value="">Select</option>
 
                         <option value="Attchd">Attached</option>
                         <option value="Detchd">Detached</option>
-                        <option value="BuiltIn">BuiltIn</option>
+                        <option value="BuiltIn">Built In</option>
                         <option value="Basment">Basement</option>
+                        <option value="CarPort">CarPort</option>
+                        <option value="2Types">2Types</option>
 
                     </select>
 
@@ -369,94 +225,49 @@
 
                 <!-- Sale Condition -->
 
-                <div class="mb-4">
+                <div class="col-md-6 mb-3">
 
-                    <label class="form-label">
+                    <label class="form-label">Sale Condition</label>
 
-                        Sale Condition
+                    <select class="form-select" name="Sale Condition" required>
 
-                    </label>
-
-                    <select class="form-control"
-                            name="Sale Condition"
-                            required>
-
-                        <option selected disabled value="">
-                            Select Sale Condition
-                        </option>
+                        <option value="">Select</option>
 
                         <option value="Normal">Normal</option>
                         <option value="Partial">Partial</option>
                         <option value="Abnorml">Abnormal</option>
                         <option value="Family">Family</option>
+                        <option value="Alloca">Allocation</option>
+                        <option value="AdjLand">AdjLand</option>
 
                     </select>
 
                 </div>
 
-                <!-- ===================================== -->
-                <!-- Submit Button -->
-                <!-- ===================================== -->
+            </div>
 
-                <div class="d-grid">
+            <div class="d-grid">
 
-                    <button type="submit"
-                            class="btn btn-primary btn-lg">
-
-                        Predict House Price
-
-                    </button>
-
-                </div>
-
-            </form>
-
-            <!-- ========================================= -->
-            <!-- Prediction Result -->
-            <!-- ========================================= -->
-
-            {% if results %}
-
-            <div class="alert alert-success mt-5">
-
-                <h2 class="text-center">
-
-                    Predicted House Price:
-                    $ {{ results }}
-
-                </h2>
+                <button class="btn btn-primary btn-lg" type="submit">
+                    Predict House Price
+                </button>
 
             </div>
 
-            {% endif %}
+        </form>
 
-            <!-- ========================================= -->
-            <!-- SHAP Feature Importance -->
-            <!-- ========================================= -->
+        <br>
 
-            {% if shap_table %}
-
-            <div class="mt-5">
-
-                <h3 class="text-center text-secondary mb-3">
-
-                    Top Feature Importance (SHAP)
-
-                </h3>
-
-                <div class="table-responsive">
-
-                    {{ shap_table | safe }}
-
-                </div>
-
-            </div>
-
-            {% endif %}
-
+        {% if results %}
+        <div class="alert alert-success text-center">
+            <h4>Predicted House Price</h4>
+            <h3>${{ results }}</h3>
         </div>
+        {% endif %}
 
     </div>
+
+</div>
 
 </body>
 
